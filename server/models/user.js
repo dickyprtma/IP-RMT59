@@ -58,7 +58,9 @@ module.exports = (sequelize, DataTypes) => {
     },
     phoneNumber: DataTypes.STRING,
     address: DataTypes.STRING,
-    imageUrl: DataTypes.STRING
+    imageUrl: DataTypes.STRING,
+    emailVerifiedAt: DataTypes.DATE // jangan lupa ditambahkan karena baru saja di tambahkan di migration dan akan diupate
+
   }, {
     sequelize,
     modelName: 'User',

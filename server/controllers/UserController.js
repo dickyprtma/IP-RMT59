@@ -1,6 +1,8 @@
 const { User } = require('../models/index')
 const { comparePassword, hashingPassword } = require('../helpers/bcrypt')
-const { signToken } = require('../helpers/jwt')
+const { signToken, verifyToken } = require('../helpers/jwt')
+const { verify } = require('jsonwebtoken')
+const transporter = require('../helpers/email')
 
 class UserController {
     static async login(req, res, next) {
@@ -38,6 +40,13 @@ class UserController {
                 throw {
                     name: "Unauthorized",
                     message: "email, or password is invalid"
+                }
+            }
+
+            if (!user.emailVerifiedAt) {
+                throw {
+                    name: "Unauthorized",
+                    message: `Please verify your email before logging in`
                 }
             }
 
@@ -85,8 +94,26 @@ class UserController {
 
             const newUser = await User.create({
                 email: email,
-                password: await hashingPassword(password)
+                password: await hashingPassword(password),
+                verifiedAt: null
             })
+
+            // Generate verification token
+            const verificationToken = signToken({ id: newUser.id }, '1h');
+            const verificationLink = `${process.env.BASE_URL}/verify-email?token=${verificationToken}`;
+
+            // Send verification email
+            await transporter.sendMail({
+                from: process.env.EMAIL_USER,
+                to: newUser.email,
+                subject: 'Verify Your Email',
+                html: `
+                    <h1>Email Verification</h1>
+                    <p>Click the link below to verify your email:</p>
+                    <a href="${verificationLink}">Verify Email</a>
+                    <p>This link will expire in 1 hour.</p>
+                `
+            });
 
             // remove password from response
             delete newUser.dataValues.password
@@ -97,6 +124,26 @@ class UserController {
             })
         } catch (error) {
             next(error)
+        }
+    }
+
+    static async verifyEmail(req, res, next) {
+        try {
+            const { token } = req.query;
+            // if (!token) throw { name: "BadRequest", message: "Token is required" };
+            const decoded = verifyToken(token)
+            const user = await User.findByPk(decoded.id);
+
+            if (!user) throw { name: "NotFound", message: "User not found" };
+            if (user.emailVerifiedAt) return res.status(200).json({ message: "Email already verified" });
+
+            await User.update(
+                { emailVerifiedAt: new Date() },
+                { where: { id: user.id } }
+            );
+            res.status(200).json({ message: "Email verification successful" });
+        } catch (error) {
+            next(error);
         }
     }
 }

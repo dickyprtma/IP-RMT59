@@ -32,6 +32,10 @@ function errorHandler(err, req, res, next) {
             return res.status(400).json({
                 message: err.message
             })
+        case "TokenExpiredError":
+            return res.status(401).json({
+                message: "Verification link expired"
+            })
         default:
             res.status(500).json({
                 "message": `internal server error: ${err}`
