@@ -2,7 +2,7 @@ const { User } = require('../models/index')
 const { comparePassword, hashingPassword } = require('../helpers/bcrypt')
 const { signToken, verifyToken } = require('../helpers/jwt')
 const { verify } = require('jsonwebtoken')
-const transporter = require('../helpers/email')
+const emailHelper = require('../helpers/emailHelper')
 
 class UserController {
     static async login(req, res, next) {
@@ -103,16 +103,11 @@ class UserController {
             const verificationLink = `${process.env.BASE_URL}/verify-email?token=${verificationToken}`;
 
             // Send verification email
-            await transporter.sendMail({
+            await emailHelper.transporter.sendMail({
                 from: process.env.EMAIL_USER,
                 to: newUser.email,
                 subject: 'Verify Your Email',
-                html: `
-                    <h1>Email Verification</h1>
-                    <p>Click the link below to verify your email:</p>
-                    <a href="${verificationLink}">Verify Email</a>
-                    <p>This link will expire in 1 hour.</p>
-                `
+                html: emailHelper.emailPageTemplate(verificationLink)
             });
 
             // remove password from response
