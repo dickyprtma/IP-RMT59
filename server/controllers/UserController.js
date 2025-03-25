@@ -3,6 +3,8 @@ const { comparePassword, hashingPassword } = require('../helpers/bcrypt')
 const { signToken, verifyToken } = require('../helpers/jwt')
 const { verify } = require('jsonwebtoken')
 const emailHelper = require('../helpers/emailHelper')
+const { OAuth2Client } = require('google-auth-library');
+const randomPasswordGenerator = require('../helpers/randomPasswordGenerator')
 
 class UserController {
     static async login(req, res, next) {
@@ -64,14 +66,6 @@ class UserController {
             })
         } catch (error) {
             next(error)
-        }
-    }
-
-    static async googleLogin(req, res, next) {
-        try {
-
-        } catch (error) {
-
         }
     }
 
@@ -141,6 +135,45 @@ class UserController {
             next(error);
         }
     }
+
+    static async googleLogin(req, res, next) {
+        try {
+            const { googleToken } = req.body
+            const client = new OAuth2Client();
+            const ticket = await client.verifyIdToken({
+                idToken: googleToken,
+                audience: process.env.WEB_CLIENT_ID,
+            });
+            const payload = ticket.getPayload();
+
+            const [user, created] = await User.findOrCreate({
+                where: { email: payload.email },
+                defaults: {
+                    email: payload.email,
+                    password: await hashingPassword(randomPasswordGenerator()),
+                    emailVerifiedAt: new Date(),
+                    role: "User"
+                },
+            });
+
+            const bearerToken = await signToken({
+                id: user.id,
+                email: user.email,
+                role: user.role
+            })
+
+            res.json({
+                message: `login success`,
+                access_token: bearerToken,
+                data: {
+                    id: user.id
+                }
+            })
+        } catch (error) {
+            next(error)
+        }
+    }
+
 }
 
 module.exports = UserController
