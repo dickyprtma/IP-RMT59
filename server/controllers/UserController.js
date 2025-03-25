@@ -119,7 +119,7 @@ class UserController {
     static async verifyEmail(req, res, next) {
         try {
             const { token } = req.query;
-            // if (!token) throw { name: "BadRequest", message: "Token is required" };
+            if (!token) throw { name: "BadRequest", message: "Token is required" };
             const decoded = verifyToken(token)
             const user = await User.findByPk(decoded.id);
 
