@@ -1,4 +1,8 @@
+import { useNavigate } from "react-router";
+import Swal from "sweetalert2";
+
 function Navbar() {
+    const navigate = useNavigate()
     return (
         <header class="flex flex-wrap  md:justify-start md:flex-nowrap z-50 w-full bg-white  dark:bg-neutral-800">
             <nav class="relative max-w-[85rem] w-full mx-auto md:flex md:items-center md:justify-between md:gap-3 py-4 px-4 sm:px-6 lg:px-20">
@@ -78,9 +82,20 @@ function Navbar() {
                             </div>
 
                             <div class=" flex flex-wrap items-center gap-x-1.5">
-                                <a class="py-2 px-2.5 inline-flex items-center font-medium text-sm rounded-lg bg-blue-600 text-white hover:bg-blue-700 focus:outline-hidden focus:bg-blue-700 disabled:opacity-50 disabled:pointer-events-none dark:bg-blue-500 dark:hover:bg-blue-600 dark:focus:bg-blue-600" href="#">
-                                    Login
-                                </a>
+                                <button onClick={(e) => {
+                                    if (localStorage.getItem("access_token")) {
+                                        navigate('/login')
+                                        Swal.fire("Success", "Logout berhasil", "success")
+                                        localStorage.removeItem("access_token")
+                                        localStorage.removeItem("user_id")
+                                    } else {
+                                        navigate('/login')
+                                    }
+                                }} className={`py-2 px-2.5 inline-flex items-center font-medium text-sm rounded-lg text-white ${localStorage.getItem("access_token") ? "bg-red-500" : "bg-blue-500"}`}>
+                                    {(localStorage.getItem("access_token") ? "Logout" : "Login")}
+                                </button>
+
+
                             </div>
                         </div>
                     </div>

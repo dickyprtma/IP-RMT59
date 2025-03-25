@@ -1,6 +1,6 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import './App.css'
-import { BrowserRouter, Outlet, Route, Routes } from 'react-router'
+import { BrowserRouter, Outlet, Route, Routes, useNavigate } from 'react-router'
 import LoginPage from './pages/LoginPage'
 import LandingPage from './pages/LandingPage'
 import RegisterPage from './pages/RegisterPage'
@@ -11,6 +11,13 @@ import KanjiPage from './pages/KanjiPage'
 
 
 function IndexLayout() {
+  const navigate = useNavigate()
+  useEffect(() => {
+    if (!localStorage.getItem("access_token")) {
+      navigate('/login')
+    }
+  }, [])
+
   return (
     <div>
       <Navbar />

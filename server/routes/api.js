@@ -15,7 +15,7 @@ router.get('/', (req, res) => {
 })
 
 router.post('/login', UserController.login)
-router.post('/googleLogin', UserController.googleLogin)
+router.post('/google-login', UserController.googleLogin)
 
 router.post('/register', UserController.register)
 router.get('/verify-email', UserController.verifyEmail);

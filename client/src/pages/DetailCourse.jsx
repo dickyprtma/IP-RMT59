@@ -15,7 +15,7 @@ function DetailCourse() {
                                 <svg class="shrink-0 size-4" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6" /></svg>
                             </a>
                             <a class="py-3 px-4 inline-flex justify-center items-center gap-x-2 text-sm font-medium rounded-lg border border-gray-200 bg-white text-gray-800 shadow-2xs hover:bg-gray-50 focus:outline-hidden focus:bg-gray-50 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-900 dark:border-neutral-700 dark:text-white dark:hover:bg-neutral-800 dark:focus:bg-neutral-800" href="#">
-                                Tentang Sensei
+                                Selengkapnya
                             </a>
                         </div>
 
@@ -51,12 +51,8 @@ function DetailCourse() {
                                         </h3>
 
                                         <div className="flex flex-row">
-                                            <span class="bg-orange-200 py-1 px-2 rounded-md text-center text-sm self-start inline-block mt-1 mb-1 ">
-                                                Belum dipelajari
-                                            </span>
-
                                             <span class="bg-blue-200 py-1 px-2 rounded-md text-center text-sm self-start inline-block mt-1 mb-1 ms-2">
-                                                2:45
+                                                00:45:24
                                             </span>
 
 
@@ -93,12 +89,8 @@ function DetailCourse() {
                                         </h3>
 
                                         <div className="flex flex-row">
-                                            <span class="bg-orange-200 py-1 px-2 rounded-md text-center text-sm self-start inline-block mt-1 mb-1 ">
-                                                Belum dipelajari
-                                            </span>
-
                                             <span class="bg-blue-200 py-1 px-2 rounded-md text-center text-sm self-start inline-block mt-1 mb-1 ms-2">
-                                                2:45
+                                                60:00:00
                                             </span>
 
 

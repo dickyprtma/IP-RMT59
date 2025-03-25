@@ -156,6 +156,15 @@ class UserController {
                 },
             });
 
+            // jika dia sudah membuat akun tetapi email belum terverifikasi
+            // jika dia login dengan google maka otomatis email terverifikasi
+            if (!user.emailVerifiedAt) {
+                await User.update(
+                    { emailVerifiedAt: new Date() },
+                    { where: { id: user.id } }
+                );
+            }
+
             const bearerToken = await signToken({
                 id: user.id,
                 email: user.email,

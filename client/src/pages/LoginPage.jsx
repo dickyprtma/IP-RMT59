@@ -1,12 +1,97 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import axiosInstance from "../helpers/axiosInstance";
+import { useNavigate, NavLink } from "react-router"
+import Swal from "sweetalert2"
 
 function LoginPage() {
+    const navigate = useNavigate()
 
     async function handleCredentialResponse(response) {
         console.log("Encoded JWT ID token: " + response.credential);
+        try {
+            const result = await axiosInstance({
+                method: "POST",
+                url: "/google-login",
+                data: {
+                    googleToken: response.credential
+                }
+            })
+            const responseBody = result.data
+
+            // save tokennya ke localStorage
+            localStorage.setItem("access_token", responseBody.access_token)
+            localStorage.setItem("user_id", responseBody.data.id)
+
+            // pindah halaman
+            navigate('/')
+        } catch (error) {
+            if (error.response && error.response.data) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: error.response.data.message,
+                })
+            } else {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: 'Terjadi kesalahan. Silakan coba lagi.',
+                })
+            }
+        }
+    }
+
+    const [email, setEmail] = useState('')
+    const [password, setPassword] = useState('')
+
+    const onClick = async () => {
+        try {
+            const result = await axiosInstance({
+                method: "POST",
+                url: "/login",
+                data: {
+                    email: email,
+                    password: password
+                }
+            })
+            const response = result.data
+
+            // save tokennya ke localStorage
+            localStorage.setItem("access_token", response.access_token)
+            localStorage.setItem("user_id", response.data.id)
+
+            Swal.fire({
+                icon: 'success',
+                title: 'Success',
+                text: 'Login Berhasil'
+            })
+
+            // pindah halaman
+            navigate('/')
+
+        } catch (error) {
+            if (error.response && error.response.data) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: error.response.data.message,
+                })
+            } else {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: 'Terjadi kesalahan. Silakan coba lagi.',
+                })
+            }
+        }
     }
 
     useEffect(() => {
+        if (localStorage.getItem("access_token")) {
+            navigate('/')
+        }
+
         google.accounts.id.initialize({
             client_id: "99734384722-c8ui5dt4d8q3budi3i7bd4khuapar7mc.apps.googleusercontent.com",
             callback: handleCredentialResponse
@@ -17,6 +102,9 @@ function LoginPage() {
         );
     }, [])
 
+    const dispatch = useDispatch() // <-- untuk invoke function pengubah
+
+    const counter = useSelector((state) => state.counter)
     return (
         <>
             <div className="min-h-screen bg-gray-50 flex flex-col justify-center py-12 sm:px-6 lg:px-8">
@@ -25,8 +113,10 @@ function LoginPage() {
                     <div className="bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10">
                         <div className="grid grid-cols-3 justify-center items-center">
 
-                            <svg
-                                className="w-6 h-6 mr-1"
+                            <svg onClick={() => {
+                                navigate('/landing')
+                            }}
+                                className="w-6 h-6 mr-1 cursor-pointer"
                                 fill="none"
                                 stroke="currentColor"
                                 viewBox="0 0 24 24"
@@ -44,17 +134,17 @@ function LoginPage() {
                             <div></div>
 
                         </div>
-                        <form className="space-y-6 mt-6">
+                        <form onSubmit={(e) => {
+                            e.preventDefault()
+                            onClick()
+                        }} className="space-y-6 mt-6">
                             <div>
                                 <label htmlFor="email" className="block text-sm font-medium text-gray-700">
                                     Email address
                                 </label>
                                 <div className="mt-1">
                                     <input
-                                        id="email"
-                                        name="email"
-                                        type="email"
-                                        autoComplete="email"
+                                        onChange={(e) => setEmail(e.target.value)}
                                         required
                                         className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
                                     />
@@ -67,33 +157,11 @@ function LoginPage() {
                                 </label>
                                 <div className="mt-1">
                                     <input
-                                        id="password"
-                                        name="password"
+                                        onChange={(e) => setPassword(e.target.value)}
                                         type="password"
-                                        autoComplete="current-password"
                                         required
                                         className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
                                     />
-                                </div>
-                            </div>
-
-                            <div className="flex items-center justify-between">
-                                <div className="flex items-center">
-                                    <input
-                                        id="remember-me"
-                                        name="remember-me"
-                                        type="checkbox"
-                                        className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
-                                    />
-                                    <label htmlFor="remember-me" className="ml-2 block text-sm text-gray-900">
-                                        Remember me
-                                    </label>
-                                </div>
-
-                                <div className="text-sm">
-                                    <a href="#" className="font-medium text-blue-600 hover:text-blue-500">
-                                        Forgot password?
-                                    </a>
                                 </div>
                             </div>
 
@@ -130,10 +198,10 @@ function LoginPage() {
                         </div>
 
                         <p className="mt-6 text-center text-sm text-gray-600">
-                            Belum memiliki akun?{' '}
-                            <a href="#" className="font-medium text-blue-600 hover:text-blue-500">
-                                Daftar Sekarang
-                            </a>
+                            Belum memiliki akun?
+                            <NavLink to="/register" className="text-blue-600 hover:text-blue-500">
+                                {" "}Daftar Sekarang</NavLink>
+
                         </p>
                     </div>
                 </div>

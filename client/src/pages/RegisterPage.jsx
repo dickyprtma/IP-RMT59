@@ -1,4 +1,61 @@
+import { useEffect, useState } from "react";
+import Swal from "sweetalert2"
+import axiosInstance from "../helpers/axiosInstance"
+import { useNavigate, NavLink } from "react-router"
+
 function RegisterPage() {
+    const navigate = useNavigate()
+
+    const [email, setEmail] = useState('')
+    const [password, setPassword] = useState('')
+    const [address, setAddress] = useState('')
+    const [phone, setPhone] = useState('')
+
+    useEffect(() => {
+        if (localStorage.getItem("access_token")) {
+            navigate('/')
+        }
+    }, [])
+
+    const onClick = async () => {
+        try {
+            const result = await axiosInstance({
+                method: "POST",
+                url: "/register",
+                data: {
+                    email: email,
+                    password: password,
+                    address: address,
+                    phone: phone
+                }
+            })
+            const response = result.data
+            Swal.fire({
+                icon: 'success',
+                title: 'Success',
+                text: 'Berhasil membuat akun'
+            })
+
+            // pindah halaman
+            navigate('/login')
+
+        } catch (error) {
+            if (error.response && error.response.data) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: error.response.data.message,
+                })
+            } else {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: `Terjadi kesalahan. Silakan coba lagi ${error}`,
+                })
+            }
+        }
+    }
+
     return (
         <>
             <div className="min-h-screen bg-gray-50 flex flex-col justify-center py-12 sm:px-6 lg:px-8">
@@ -8,6 +65,10 @@ function RegisterPage() {
                         <div className="grid grid-cols-3 justify-center items-center">
 
                             <svg
+                                onClick={() => {
+                                    navigate('/login')
+                                }}
+                                cursor="pointer"
                                 className="w-6 h-6 mr-1"
                                 fill="none"
                                 stroke="currentColor"
@@ -26,17 +87,17 @@ function RegisterPage() {
                             <div></div>
 
                         </div>
-                        <form className="space-y-6 mt-6">
+                        <form onSubmit={(e) => {
+                            e.preventDefault()
+                            onClick()
+                        }} className="space-y-6 mt-6">
                             <div>
                                 <label htmlFor="email" className="block text-sm font-medium text-gray-700">
                                     Email address
                                 </label>
                                 <div className="mt-1">
                                     <input
-                                        id="email"
-                                        name="email"
-                                        type="email"
-                                        autoComplete="email"
+                                        onChange={(e) => setEmail(e.target.value)}
                                         required
                                         className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
                                     />
@@ -49,10 +110,8 @@ function RegisterPage() {
                                 </label>
                                 <div className="mt-1">
                                     <input
-                                        id="password"
-                                        name="password"
                                         type="password"
-                                        autoComplete="current-password"
+                                        onChange={(e) => setPassword(e.target.value)}
                                         required
                                         className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
                                     />
@@ -65,10 +124,7 @@ function RegisterPage() {
                                 </label>
                                 <div className="mt-1">
                                     <input
-                                        id="email"
-                                        name="email"
-                                        type="email"
-                                        autoComplete="email"
+                                        onChange={(e) => setAddress(e.target.value)}
                                         required
                                         className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
                                     />
@@ -76,15 +132,12 @@ function RegisterPage() {
                             </div>
 
                             <div>
-                                <label htmlFor="email" className="block text-sm font-medium text-gray-700">
+                                <label className="block text-sm font-medium text-gray-700">
                                     Nomor Handphone
                                 </label>
                                 <div className="mt-1">
                                     <input
-                                        id="email"
-                                        name="email"
-                                        type="email"
-                                        autoComplete="email"
+                                        onChange={(e) => setPhone(e.target.value)}
                                         required
                                         className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
                                     />
@@ -101,9 +154,8 @@ function RegisterPage() {
 
                         <p className="mt-6 text-center text-sm text-gray-600">
                             Sudah memiliki akun?{' '}
-                            <a href="#" className="font-medium text-blue-600 hover:text-blue-500">
-                                Login Sekarang
-                            </a>
+                            <NavLink to="/login" className="text-blue-600 hover:text-blue-500">
+                                {" "}Login Sekarang</NavLink>
                         </p>
                     </div>
                 </div>
