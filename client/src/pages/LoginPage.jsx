@@ -1,5 +1,22 @@
+import { useEffect } from "react";
 
 function LoginPage() {
+
+    async function handleCredentialResponse(response) {
+        console.log("Encoded JWT ID token: " + response.credential);
+    }
+
+    useEffect(() => {
+        google.accounts.id.initialize({
+            client_id: "99734384722-c8ui5dt4d8q3budi3i7bd4khuapar7mc.apps.googleusercontent.com",
+            callback: handleCredentialResponse
+        });
+        google.accounts.id.renderButton(
+            document.getElementById("btnGoogleLogin"),
+            { theme: "outline", size: "large" }  // customization attributes
+        );
+    }, [])
+
     return (
         <>
             <div className="min-h-screen bg-gray-50 flex flex-col justify-center py-12 sm:px-6 lg:px-8">
@@ -98,14 +115,17 @@ function LoginPage() {
                                 </div>
                             </div>
 
-                            <div className="mt-6 grid grid-cols-1 gap-3">
-                                <button
+                            {/* login with google */}
+                            <div className="mt-6 flex flex-col">
+                                {/* <button
                                     type="button"
                                     className="w-full inline-flex justify-center py-2 px-4 border border-gray-300 rounded-md shadow-sm bg-white text-sm font-medium text-gray-500 hover:bg-gray-50"
                                 >
                                     <span className="sr-only">Sign in with Google</span>
                                     Google
-                                </button>
+                                </button> */}
+                                <div className="text-center flex justify-center" id="btnGoogleLogin">Loading...</div>
+
                             </div>
                         </div>
 

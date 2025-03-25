@@ -7,6 +7,7 @@ import RegisterPage from './pages/RegisterPage'
 import CoursePage from './pages/CoursesPage'
 import Navbar from './components/navbar'
 import DetailCourse from './pages/DetailCourse'
+import KanjiPage from './pages/KanjiPage'
 
 
 function IndexLayout() {
@@ -30,6 +31,7 @@ function App() {
         <Route path='/' element={<IndexLayout />}>
           <Route path='/courses' element={<CoursePage />} />
           <Route path='/courses/:courseId' element={<DetailCourse />} />
+          <Route path='/kanji/' element={<KanjiPage />} />
         </Route>
       </Routes>
     </BrowserRouter>
