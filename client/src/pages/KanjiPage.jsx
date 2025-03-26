@@ -1,4 +1,20 @@
+import { useEffect } from "react"
+import { useDispatch, useSelector } from "react-redux"
+import { index } from "../store/kanjiSlice"
+
 function KanjiPage() {
+    const dispatch = useDispatch()
+    const kanjiState = useSelector(function (state) {
+        return state.kanjiReducer
+    })
+
+    const kanjis = kanjiState.data
+    console.log(kanjis)
+
+    useEffect(() => {
+        dispatch(index())
+    }, [])
+
     return (
         <section className="px-20">
             <div className="flex flex-col lg:flex-row justify-between mt-8">
@@ -37,29 +53,12 @@ function KanjiPage() {
                 </div>
             </div>
             <div className="grid grid-cols-5  mt-8 gap-2">
-                <div class=" bg-white border border-gray-200 rounded-lg shadow-sm dark:bg-gray-800 dark:border-gray-700 p-12 flex flex-col justify-center items-center">
-                    <span className="text-center text-5xl font-medium">前</span>
-                </div>
+                {kanjis.map((item) => {
+                    return <div class=" bg-white border border-gray-200 rounded-lg shadow-sm dark:bg-gray-800 dark:border-gray-700 p-12 flex flex-col justify-center items-center">
+                        <span className="text-center text-5xl font-medium">{item}</span>
+                    </div>
+                })}
 
-                <div class=" bg-white border border-gray-200 rounded-lg shadow-sm dark:bg-gray-800 dark:border-gray-700 p-12 flex flex-col justify-center items-center">
-                    <span className="text-center text-4xl font-medium">前</span>
-                </div>
-
-                <div class=" bg-white border border-gray-200 rounded-lg shadow-sm dark:bg-gray-800 dark:border-gray-700 p-12 flex flex-col justify-center items-center">
-                    <span className="text-center text-4xl font-medium">前</span>
-                </div>
-
-                <div class=" bg-white border border-gray-200 rounded-lg shadow-sm dark:bg-gray-800 dark:border-gray-700 p-12 flex flex-col justify-center items-center">
-                    <span className="text-center text-4xl font-medium">前</span>
-                </div>
-
-                <div class=" bg-white border border-gray-200 rounded-lg shadow-sm dark:bg-gray-800 dark:border-gray-700 p-12 flex flex-col justify-center items-center">
-                    <span className="text-center text-4xl font-medium">前</span>
-                </div>
-
-                <div class=" bg-white border border-gray-200 rounded-lg shadow-sm dark:bg-gray-800 dark:border-gray-700 p-12 flex flex-col justify-center items-center">
-                    <span className="text-center text-4xl font-medium">前</span>
-                </div>
             </div>
 
         </section>

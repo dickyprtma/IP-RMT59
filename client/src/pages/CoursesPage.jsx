@@ -10,9 +10,6 @@ function CoursesPage() {
     })
     const courses = courseReduxState.data
 
-    // console.log(JSON.stringify(courseReduxState.responseBody)) // response body
-    // console.log(courseReduxState.data)
-
     useEffect(() => {
         dispatch(fetchCourses())
     }, [])
