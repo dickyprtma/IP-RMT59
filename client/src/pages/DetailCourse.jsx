@@ -5,6 +5,7 @@ import { show } from "../store/coursesSlice";
 import { index } from "../store/materialSlice";
 import { index as indexUserCourse, toggleUserCourse } from "../store/userCourseSlice";
 import dotcircle from "../assets/dot-circle.svg"
+import Swal from "sweetalert2";
 
 function DetailCourse() {
 
@@ -40,6 +41,15 @@ function DetailCourse() {
         dispatch(toggleUserCourse({ courseId, userId }))
     }
 
+    const handleVideoClick = (e, videoUrl) => {
+        if (!userCourseState.isEnrolled) {
+            e.preventDefault()
+            Swal.fire("Gagal", "Anda harus mengambil kursus terlebih dahulu", "error")
+        } else {
+            window.open(videoUrl, "_blank")
+        }
+    }
+
     return (
         <div className="lg:px-20 pb-20 py-8">
             <div class="max-w-[85rem] mx-auto">
@@ -55,9 +65,11 @@ function DetailCourse() {
                                 {userCourseState.isEnrolled ? "Keluar Kursus" : "Ambil Kursus"}
                                 <svg class="shrink-0 size-4" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6" /></svg>
                             </button>
-                            <a class="py-3 px-4 inline-flex justify-center items-center gap-x-2 text-sm font-medium rounded-lg border border-gray-200 bg-white text-gray-800 shadow-2xs hover:bg-gray-50 focus:outline-hidden focus:bg-gray-50 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-900 dark:border-neutral-700 dark:text-white dark:hover:bg-neutral-800 dark:focus:bg-neutral-800" href="#">
+                            <button onClick={() => {
+                                Swal.fire("Info", `${course.desc}`, "info")
+                            }} class="py-3 px-4 inline-flex justify-center items-center gap-x-2 text-sm font-medium rounded-lg border border-gray-200 bg-white text-gray-800 shadow-2xs hover:bg-gray-50 focus:outline-hidden focus:bg-gray-50 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-900 dark:border-neutral-700 dark:text-white dark:hover:bg-neutral-800 dark:focus:bg-neutral-800" href="#">
                                 Selengkapnya
-                            </a>
+                            </button>
                         </div>
 
                     </div>
@@ -80,7 +92,7 @@ function DetailCourse() {
                     </div>
                     <div class="grow pb-8 group-last:pb-0">
                         <div class="mt-3 ">
-                            <a class="block border border-gray-200 rounded-lg hover:shadow-2xs focus:outline-hidden dark:border-neutral-700" href={`${item.videoUrl}`} target="_blank">
+                            <a onClick={(e) => handleVideoClick(e, item.videoUrl)} class="block border border-gray-200 rounded-lg hover:shadow-2xs focus:outline-hidden dark:border-neutral-700 cursor-pointer">
                                 <div class="relative flex items-center overflow-hidden">
                                     <img class="w-32 sm:w-48 h-full absolute inset-0 object-cover rounded-s-lg" src={item.imageUrl} alt="Blog Image" />
 
