@@ -3,6 +3,7 @@ import { useParams } from "react-router";
 import { useEffect } from "react";
 import { show } from "../store/coursesSlice";
 import { index } from "../store/materialSlice";
+import { index as indexUserCourse, toggleUserCourse } from "../store/userCourseSlice";
 import dotcircle from "../assets/dot-circle.svg"
 
 function DetailCourse() {
@@ -13,10 +14,16 @@ function DetailCourse() {
     const courseReduxState = useSelector(function (state) {
         return state.courses
     })
+    const userId = localStorage.getItem("user_id")
 
     const materialState = useSelector(function (state) {
         return state.materialReducer
     })
+
+    const userCourseState = useSelector(function (state) {
+        return state.userCourseReducer
+    })
+    console.log(JSON.stringify(userCourseState.isEnrolled))
 
     const { courseId } = useParams()
 
@@ -26,7 +33,12 @@ function DetailCourse() {
     useEffect(() => {
         dispatch(show(courseId))
         dispatch(index(courseId))
+        dispatch(indexUserCourse({ courseId, userId }))
     }, [])
+
+    const handleToggleEnrollment = () => {
+        dispatch(toggleUserCourse({ courseId, userId }))
+    }
 
     return (
         <div className="lg:px-20 pb-20 py-8">
@@ -37,10 +49,12 @@ function DetailCourse() {
                         <p class="mt-3 text-lg text-gray-800 dark:text-neutral-400">{course.desc}</p>
 
                         <div class="mt-7 grid gap-3 w-full sm:inline-flex">
-                            <a class="py-3 px-4 inline-flex justify-center items-center gap-x-2 text-sm font-medium rounded-lg border border-transparent bg-blue-600 text-white hover:bg-blue-700 focus:outline-hidden focus:bg-blue-700 disabled:opacity-50 disabled:pointer-events-none" href="#">
-                                Ambil Kursus
+                            <button onClick={() => {
+                                handleToggleEnrollment()
+                            }} className={`py-3 px-4 inline-flex justify-center items-center gap-x-2 text-sm font-medium rounded-lg border border-transparent text-white ${userCourseState.isEnrolled ? 'bg-red-500' : 'bg-blue-500'}`}>
+                                {userCourseState.isEnrolled ? "Keluar Kursus" : "Ambil Kursus"}
                                 <svg class="shrink-0 size-4" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6" /></svg>
-                            </a>
+                            </button>
                             <a class="py-3 px-4 inline-flex justify-center items-center gap-x-2 text-sm font-medium rounded-lg border border-gray-200 bg-white text-gray-800 shadow-2xs hover:bg-gray-50 focus:outline-hidden focus:bg-gray-50 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-900 dark:border-neutral-700 dark:text-white dark:hover:bg-neutral-800 dark:focus:bg-neutral-800" href="#">
                                 Selengkapnya
                             </a>
@@ -65,9 +79,7 @@ function DetailCourse() {
                         </div>
                     </div>
                     <div class="grow pb-8 group-last:pb-0">
-
-
-                        <div class="mt-3">
+                        <div class="mt-3 ">
                             <a class="block border border-gray-200 rounded-lg hover:shadow-2xs focus:outline-hidden dark:border-neutral-700" href={`${item.videoUrl}`} target="_blank">
                                 <div class="relative flex items-center overflow-hidden">
                                     <img class="w-32 sm:w-48 h-full absolute inset-0 object-cover rounded-s-lg" src={item.imageUrl} alt="Blog Image" />
