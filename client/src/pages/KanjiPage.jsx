@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from "react-redux"
 import { index } from "../store/kanjiSlice"
 
 function KanjiPage() {
+
     const dispatch = useDispatch()
     const kanjiState = useSelector(function (state) {
         return state.kanjiReducer
