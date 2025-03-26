@@ -69,7 +69,7 @@ module.exports = {
       {
         title: 'Belajar Bahasa Jepang - CARA MENULIS HIRAGANA',
         desc: 'こんにちは !! Hari ini mari kita belajar menulis Hiragana sampai bisa ya. Buat teman2 yg mau belajar materi lainnya silahkan cek playlist yaa Arigatou Minasan (^^)',
-        imageUrl: 'https://i.ytimg.com/vi/6FTwPcS-nYY/hqdefault.jpghttps://i.ytimg.com/vi/6FTwPcS-nYY/hqdefault.jpg?sqp=-oaymwEmCKgBEF5IWvKriqkDGQgBFQAAiEIYAdgBAeIBCggYEAIYBjgBQAE=&rs=AOn4CLB9onB03gXT_ttr9_g4X1LfYxpS_A',
+        imageUrl: 'https://i.ytimg.com/vi/6FTwPcS-nYY/hq720.jpg?sqp=-oaymwEnCNAFEJQDSFryq4qpAxkIARUAAIhCGAHYAQHiAQoIGBACGAY4AUAB&rs=AOn4CLAWjfIXIxz2aSuowjg8J89r-a06cw',
         videoUrl: 'https://www.youtube.com/watch?v=6FTwPcS-nYY&list=PLhQ568NlkEK2O3NhQdNzl9YNLEgXMSW-J&index=2',
         duration: '00:11:57',
         CourseId: 1,

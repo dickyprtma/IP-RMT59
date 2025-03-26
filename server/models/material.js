@@ -16,6 +16,7 @@ module.exports = (sequelize, DataTypes) => {
   Material.init({
     title: DataTypes.STRING,
     imageUrl: DataTypes.STRING,
+    videoUrl: DataTypes.STRING,
     duration: DataTypes.STRING,
     desc: DataTypes.STRING,
     CourseId: DataTypes.INTEGER

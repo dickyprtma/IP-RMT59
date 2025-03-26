@@ -37,7 +37,6 @@ export const coursesReducer = coursesSlice.reducer
 
 
 // ini akan diinvoke di views
-
 export const fetchCourses = createAsyncThunk("courses/fetchCourses", async (_, { dispatch }) => {
     try {
         const result = await axiosInstance({
@@ -48,7 +47,7 @@ export const fetchCourses = createAsyncThunk("courses/fetchCourses", async (_, {
             }
         })
         const responseBody = result.data
-        dispatch(responseBodyAction(responseBody))
+        dispatch(responseBodyAction(responseBody)) // mau coba-coba ambil seluruh body aja
         dispatch(indexAction(responseBody.data))
     } catch (error) {
         console.log(error)
