@@ -7,6 +7,13 @@ class UserCourseController {
         try {
             const { userId, courseId } = req.body;
 
+            if (!courseId) {
+                throw {
+                    name: "BadRequest",
+                    message: "courseId is required"
+                }
+            }
+
             const user = await User.findByPk(userId);
             if (!user) {
                 throw {
@@ -60,6 +67,14 @@ class UserCourseController {
         try {
             const currentUserId = req.user.id;
             const { userId, courseId } = req.body;
+
+            if (!courseId) {
+                throw {
+                    name: "BadRequest",
+                    message: "courseId is required"
+                }
+            }
+
             const user = await User.findByPk(userId);
             if (!user) {
                 throw {
