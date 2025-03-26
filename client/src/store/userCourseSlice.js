@@ -7,7 +7,8 @@ const userCourseSlice = createSlice({
     name: "userCourseSlice",
     initialState: {
         data: [],
-        isEnrolled: false
+        isEnrolled: false,
+        isFavorite: false
     },
     reducers: {
         indexAction(state, action) {
@@ -18,12 +19,18 @@ const userCourseSlice = createSlice({
         },
         setEnrollmentStatus(state, action) {
             state.isEnrolled = action.payload
+        },
+        isFavoriteAction(state, action) {
+            state.isFavorite = action.payload
+        },
+        setFavoriteStatus(state, action) {
+            state.isFavorite = action.payload
         }
     }
 })
 
 // destructure dan export actions dan reducernya
-export const { indexAction, isEnrolledAction, setEnrollmentStatus } = userCourseSlice.actions
+export const { indexAction, isEnrolledAction, setEnrollmentStatus, isFavoriteAction, setFavoriteStatus } = userCourseSlice.actions
 export const userCourseReducer = userCourseSlice.reducer
 
 // buat async thunk untuk menggenerate function yang mereturn sebuah action
@@ -48,8 +55,21 @@ export const index = createAsyncThunk("userCourseSlice/index", async ({ courseId
             }
             // console.log(responseBody[i].UserCourse.CourseId, courseId, responseBody[i].UserCourse.UserId, userId)
         }
-        console.log(isEnrolledCurrently) // true tetapi di detail course tidak berubah
+
+
+        // check if user has favorited the course
+        let isFavoriteCurrently = false
+        for (let i = 0; i < responseBody.length; i++) {
+            if (responseBody[i].UserCourse.CourseId === Number(courseId) && responseBody[i].UserCourse.UserId === Number(userId)) {
+                isFavoriteCurrently = responseBody[i].UserCourse.favorite || false
+                console.log(isFavoriteCurrently)
+                break
+            }
+        }
+
+
         dispatch(isEnrolledAction(isEnrolledCurrently))
+        dispatch(isFavoriteAction(isFavoriteCurrently))
         dispatch(indexAction(responseBody))
     } catch (error) {
         console.log(error)
@@ -80,6 +100,7 @@ export const toggleUserCourse = createAsyncThunk("userCourseSlice/toggleUserCour
             })
             Swal.fire("Success", "You have been unenrolled from the course", 'success')
             dispatch(setEnrollmentStatus(false))
+            dispatch(setFavoriteStatus(false))
         } else {
             // User is not enrolled, call POST endpoint
             await axiosInstance({
@@ -100,6 +121,49 @@ export const toggleUserCourse = createAsyncThunk("userCourseSlice/toggleUserCour
         // // Re-fetch user courses to update the state
         // dispatch(indexUserCourse({ courseId, userId })) 
         // ^^ di views aja
+    } catch (error) {
+        console.log(error)
+        Swal.fire("Error", error, 'error')
+    }
+})
+
+export const toogleFavoriteUpdate = createAsyncThunk("userCourseSlice/toogleFavoriteUpdate", async ({ courseId, userId }, { dispatch, getState }) => {
+    try {
+        // Check if user is enrolled
+        const state = getState()
+        const isFavorite = state.userCourseReducer.isFavorite
+
+        if (isFavorite) {
+            // User is enrolled, call DELETE endpoint
+            await axiosInstance({
+                method: 'PATCH',
+                url: `/user-courses`,
+                headers: {
+                    Authorization: `Bearer ${localStorage.getItem("access_token")}`
+                },
+                data: {
+                    courseId,
+                    userId
+                }
+            })
+            Swal.fire("Success", "Berhasil dihapus dari favorit", 'success')
+            dispatch(setFavoriteStatus(false))
+        } else {
+            // User is not enrolled, call POST endpoint
+            await axiosInstance({
+                method: 'PATCH',
+                url: `/user-courses`,
+                headers: {
+                    Authorization: `Bearer ${localStorage.getItem("access_token")}`
+                },
+                data: {
+                    courseId,
+                    userId
+                }
+            })
+            Swal.fire("Success", "Berhasil ditandai sebagai favorit", 'success')
+            dispatch(setFavoriteStatus(true))
+        }
     } catch (error) {
         console.log(error)
         Swal.fire("Error", error, 'error')

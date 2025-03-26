@@ -5,6 +5,13 @@ class AIController {
     static async romajiToKanji(req, res, next) {
         try {
             const { romaji } = req.body
+
+            if (!romaji) {
+                return res.status(400).json({
+                    message: "Inputan tidak boleh kosong"
+                })
+            }
+
             const response = await ai.models.generateContent({
                 model: "gemini-2.0-flash",
                 contents: `berikan transliterasi untuk romaji '${romaji}' ke bentuk kanjinya. berikan response hanya kanjinya saja. jika yang diinputkan bukan romaji maka berikan repsponse huruf itu sendiri`,
@@ -22,6 +29,13 @@ class AIController {
     static async kanjiToRomaji(req, res, next) {
         try {
             const { kanji } = req.body
+
+            if (!kanji) {
+                return res.status(400).json({
+                    message: "Inputan tidak boleh kosong"
+                })
+            }
+
             const response = await ai.models.generateContent({
                 model: "gemini-2.0-flash",
                 contents: `berikan transliterasi untuk kanji '${kanji}' ke bentuk romajinya. berikan response hanya romajinya saja. jika yang diinputkan bukan kanji maka berikan response '400:badrequest'`,
@@ -46,6 +60,13 @@ class AIController {
     static async translateToJapanese(req, res, next) {
         try {
             const { text } = req.body
+
+            if (!text) {
+                return res.status(400).json({
+                    message: "Inputan tidak boleh kosong"
+                })
+            }
+
             const response = await ai.models.generateContent({
                 model: "gemini-2.0-flash",
                 contents: `terjemahkan '${text}' ke bahasa jepang. berikan response hanya terjemahannya saja`,
@@ -63,6 +84,13 @@ class AIController {
     static async translateToIndonesia(req, res, next) {
         try {
             const { text } = req.body
+
+            if (!text) {
+                return res.status(400).json({
+                    message: "Inputan tidak boleh kosong"
+                })
+            }
+
             const response = await ai.models.generateContent({
                 model: "gemini-2.0-flash",
                 contents: `terjemahkan '${text}' ke bahasa indonesia. berikan response hanya terjemahannya saja`,

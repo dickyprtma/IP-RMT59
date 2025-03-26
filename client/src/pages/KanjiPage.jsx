@@ -43,13 +43,10 @@ function KanjiPage() {
                     }
                 })
                 const responseBody = result.data
-                console.log(responseBody)
                 setTransliteration(responseBody.transliteration)
             }
-
-
         } catch (error) {
-            console.log(error)
+            Swal.fire("Error", error.message, 'error')
         }
     }
 
@@ -84,7 +81,7 @@ function KanjiPage() {
                 setTranslation(responseBody.translation)
             }
         } catch (error) {
-
+            Swal.fire("Error", error.message, 'error')
         }
     }
 

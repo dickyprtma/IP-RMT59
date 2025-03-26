@@ -3,20 +3,18 @@ import { useParams } from "react-router";
 import { useEffect } from "react";
 import { show } from "../store/coursesSlice";
 import { index } from "../store/materialSlice";
-import { index as indexUserCourse, toggleUserCourse } from "../store/userCourseSlice";
+import { index as indexUserCourse, toggleUserCourse, toogleFavoriteUpdate } from "../store/userCourseSlice";
 import dotcircle from "../assets/dot-circle.svg"
 import Swal from "sweetalert2";
 
 function DetailCourse() {
-
     // redux store -> reducer -> state
-
     const dispatch = useDispatch()
     const courseReduxState = useSelector(function (state) {
         return state.courses
     })
-    const userId = localStorage.getItem("user_id")
 
+    const userId = localStorage.getItem("user_id")
     const materialState = useSelector(function (state) {
         return state.materialReducer
     })
@@ -24,7 +22,8 @@ function DetailCourse() {
     const userCourseState = useSelector(function (state) {
         return state.userCourseReducer
     })
-    console.log(JSON.stringify(userCourseState.isEnrolled))
+
+    //console.log(JSON.stringify(userCourseState.isEnrolled))
 
     const { courseId } = useParams()
 
@@ -39,6 +38,10 @@ function DetailCourse() {
 
     const handleToggleEnrollment = () => {
         dispatch(toggleUserCourse({ courseId, userId }))
+    }
+
+    const handleToogleFavorite = () => {
+        dispatch(toogleFavoriteUpdate({ courseId, userId }))
     }
 
     const handleVideoClick = (e, videoUrl) => {
@@ -65,11 +68,21 @@ function DetailCourse() {
                                 {userCourseState.isEnrolled ? "Keluar Kursus" : "Ambil Kursus"}
                                 <svg class="shrink-0 size-4" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6" /></svg>
                             </button>
+
+                            <button onClick={() => {
+                                handleToogleFavorite()
+                            }} className={`py-3 px-4 inline-flex justify-center items-center gap-x-2 text-sm font-medium rounded-lg border border-transparent ${userCourseState.isEnrolled ? 'bg-gray-100 text-black' : 'hidden'
+                                }`}>
+                                {userCourseState.isFavorite ? "- Favorit" : "+ Favorit"}
+                            </button>
+
                             <button onClick={() => {
                                 Swal.fire("Info", `${course.desc}`, "info")
                             }} class="py-3 px-4 inline-flex justify-center items-center gap-x-2 text-sm font-medium rounded-lg border border-gray-200 bg-white text-gray-800 shadow-2xs hover:bg-gray-50 focus:outline-hidden focus:bg-gray-50 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-900 dark:border-neutral-700 dark:text-white dark:hover:bg-neutral-800 dark:focus:bg-neutral-800" href="#">
                                 Selengkapnya
                             </button>
+
+
                         </div>
 
                     </div>
