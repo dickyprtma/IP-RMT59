@@ -1,13 +1,27 @@
+import { useDispatch, useSelector } from "react-redux";
 import hero from "../assets/hero.svg";
+import { show } from "../store/coursesSlice";
+import { useParams } from "react-router";
+import { useEffect } from "react";
 
 function DetailCourse() {
+    const dispatch = useDispatch()
+    const courseReduxState = useSelector(function (state) {
+        return state.courses
+    })
+    const { courseId } = useParams()
+    const course = courseReduxState.course
+    useEffect(() => {
+        dispatch(show(courseId))
+    }, [])
+
     return (
         <div className="lg:px-20 pb-20 py-8">
             <div class="max-w-[85rem] mx-auto">
                 <div class="grid md:grid-cols-2 gap-4 md:gap-8 xl:gap-20 md:items-center">
                     <div>
-                        <h1 class="block text-2xl font-bold text-gray-800 sm:text-4xl lg:text-5xl lg:leading-tight dark:text-white">Hiragana with Ryu Sensei</h1>
-                        <p class="mt-3 text-lg text-gray-800 dark:text-neutral-400">Join our comprehensive course to master Hiragana, the foundation of the Japanese writing system, with expert guidance from Ryu Sensei.</p>
+                        <h1 class="block text-2xl font-bold text-gray-800 sm:text-4xl lg:text-5xl lg:leading-tight dark:text-white">{course.title}</h1>
+                        <p class="mt-3 text-lg text-gray-800 dark:text-neutral-400">{course.desc}</p>
 
                         <div class="mt-7 grid gap-3 w-full sm:inline-flex">
                             <a class="py-3 px-4 inline-flex justify-center items-center gap-x-2 text-sm font-medium rounded-lg border border-transparent bg-blue-600 text-white hover:bg-blue-700 focus:outline-hidden focus:bg-blue-700 disabled:opacity-50 disabled:pointer-events-none" href="#">
@@ -22,7 +36,7 @@ function DetailCourse() {
                     </div>
 
                     <div class="relative ms-4">
-                        <img class="w-full rounded-md" src="https://i.ytimg.com/vi/nrv_iMuMLFk/hqdefault.jpg?sqp=-oaymwEXCOADEI4CSFryq4qpAwkIARUAAIhCGAE=&rs=AOn4CLBFRz9nFqgGVX23V3mvxtb_PwzVMg" alt="Hero Image" />
+                        <img class="w-full rounded-md" src={course.imageUrl} alt="Hero Image" />
                         <div class="absolute inset-0 -z-1 bg-linear-to-tr from-gray-200 via-white/0 to-white/0 size-full rounded-md mt-4 -mb-4 me-4 -ms-4 lg:mt-6 lg:-mb-6 lg:me-6 lg:-ms-6 dark:from-neutral-800 dark:via-neutral-900/0 dark:to-neutral-900/0"></div>
                     </div>
                 </div>

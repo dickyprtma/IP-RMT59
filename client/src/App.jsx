@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import './App.css'
-import { BrowserRouter, Outlet, Route, Routes, useNavigate } from 'react-router'
+import { BrowserRouter, Navigate, Outlet, Route, Routes, useNavigate } from 'react-router'
 import LoginPage from './pages/LoginPage'
 import LandingPage from './pages/LandingPage'
 import RegisterPage from './pages/RegisterPage'
@@ -36,6 +36,10 @@ function App() {
         <Route path="/landing" element={<LandingPage />} />
 
         <Route path='/' element={<IndexLayout />}>
+
+          {/* Redirect root path '/' to '/courses' */}
+          <Route path="/" element={<Navigate to="/courses" replace />} />
+
           <Route path='/courses' element={<CoursePage />} />
           <Route path='/courses/:courseId' element={<DetailCourse />} />
           <Route path='/kanji/' element={<KanjiPage />} />
