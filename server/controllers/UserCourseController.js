@@ -3,7 +3,7 @@ const { User, Course, UserCourse } = require('../models/index');
 
 class UserCourseController {
     // enroll
-    static async store(req, res) {
+    static async store(req, res, next) {
         try {
             const { userId, courseId } = req.body;
 
@@ -58,7 +58,7 @@ class UserCourseController {
             });
             return res.json(userCourse);
         } catch (error) {
-            return res.status(400).json({ error: error.message });
+            next(error)
         }
     }
 

@@ -3,7 +3,7 @@
 <html lang="en">
 
 <head>
-    <title>Code coverage report for server/helpers/randomPasswordGenerator.js</title>
+    <title>Code coverage report for server/__test__/test_env.js</title>
     <meta charset="utf-8" />
     <link rel="stylesheet" href="../../prettify.css" />
     <link rel="stylesheet" href="../../base.css" />
@@ -19,34 +19,34 @@
 <body>
 <div class='wrapper'>
     <div class='pad1'>
-        <h1><a href="../../index.html">All files</a> / <a href="index.html">server/helpers</a> randomPasswordGenerator.js</h1>
+        <h1><a href="../../index.html">All files</a> / <a href="index.html">server/__test__</a> test_env.js</h1>
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>8/8</span>
+                <span class='fraction'>2/2</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>1/1</span>
+                <span class='fraction'>0/0</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>1/1</span>
+                <span class='fraction'>0/0</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>7/7</span>
+                <span class='fraction'>2/2</span>
             </div>
         
             
@@ -65,35 +65,11 @@
     <pre><table class="coverage">
 <tr><td class="line-count quiet"><a name='L1'></a><a href='#L1'>1</a>
 <a name='L2'></a><a href='#L2'>2</a>
-<a name='L3'></a><a href='#L3'>3</a>
-<a name='L4'></a><a href='#L4'>4</a>
-<a name='L5'></a><a href='#L5'>5</a>
-<a name='L6'></a><a href='#L6'>6</a>
-<a name='L7'></a><a href='#L7'>7</a>
-<a name='L8'></a><a href='#L8'>8</a>
-<a name='L9'></a><a href='#L9'>9</a>
-<a name='L10'></a><a href='#L10'>10</a>
-<a name='L11'></a><a href='#L11'>11</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">4x</span>
-<span class="cline-any cline-yes">4x</span>
-<span class="cline-any cline-yes">4x</span>
-<span class="cline-any cline-yes">52x</span>
-<span class="cline-any cline-yes">52x</span>
+<a name='L3'></a><a href='#L3'>3</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">4x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">6x</span></td><td class="text"><pre class="prettyprint lang-js">function randomPasswordGenerator(length = 12) {
-    const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&amp;*()_+[]{}|;:,.&lt;&gt;?';
-    let password = '';
-    for (let i = 0; i &lt; length; i++) {
-        const randomIndex = Math.floor(Math.random() * characters.length);
-        password += characters.charAt(randomIndex);
-    }
-    return password;
-}
+<span class="cline-any cline-yes">1x</span></td><td class="text"><pre class="prettyprint lang-js">const MOCK_GOOGLE_TOKEN = "eyJhbGciOiJSUzI1NiIsImtpZCI6IjgyMWYzYmM2NmYwNzUxZjc4NDA2MDY3OTliMWFkZjllOWZiNjBkZmIiLCJ0eXAiOiJKV1QifQ.eyJpc3MiOiJodHRwczovL2FjY291bnRzLmdvb2dsZS5jb20iLCJhenAiOiI5OTczNDM4NDcyMi1jOHVpNWR0NGQ4cTNidWRpM2k3YmQ0a2h1YXBhcjdtYy5hcHBzLmdvb2dsZXVzZXJjb250ZW50LmNvbSIsImF1ZCI6Ijk5NzM0Mzg0NzIyLWM4dWk1ZHQ0ZDhxM2J1ZGkzaTdiZDRraHVhcGFyN21jLmFwcHMuZ29vZ2xldXNlcmNvbnRlbnQuY29tIiwic3ViIjoiMTAxNzE2ODU3NzA3NDYwNzMzOTQ4IiwiZW1haWwiOiJkaWNreXByYXRhbWEudGVjaEBnbWFpbC5jb20iLCJlbWFpbF92ZXJpZmllZCI6dHJ1ZSwibmJmIjoxNzQzMDU4MTc0LCJuYW1lIjoiRGlja3kgUHJhdGFtYSIsInBpY3R1cmUiOiJodHRwczovL2xoMy5nb29nbGV1c2VyY29udGVudC5jb20vYS9BQ2c4b2NKRmg5YW5BNThaUkIzMm41MUNHY3VyTUZVeTRYM2NZZGhrR3ZqUm5paVRvZ3RELVE9czk2LWMiLCJnaXZlbl9uYW1lIjoiRGlja3kiLCJmYW1pbHlfbmFtZSI6IlByYXRhbWEiLCJpYXQiOjE3NDMwNTg0NzQsImV4cCI6MTc0MzA2MjA3NCwianRpIjoiN2RlOTlmNTFjMWU4MzgzNjNhNjVkNmNhNGM0ZDA2NmIxNGFmZDc5ZSJ9.fPXLYj_OV1vs8fdrjLuskdabQS2zkAYF_yaEi1XLfXCqvq6Px42JK6XWoTFSbhEcdzCAQ3KEGpOYU-KvO6L2bTBpJxug5frdgdJQ8JoCb1Blmd034fid_NA8ZW25ZeiqZkOoOCvbPuA98qWQ9fas4s20iHTEKPEJAEWmeyyvPEalWXsX0lhAnrhP0arJZBidpEc6E8E8MaisgUQlNgraVNTKIUK5trc1Hqw5kJKrDC7RK68at66KFOVa6g9Zokr4yPbdImGY-bfbk-2xv3FYGyN2n3v8UCr2DPSicycgfv7q1Wgk-s5erB6x4HWUJFD3c9cVkqd9Lpa0s_bLP-DNIQ"
 &nbsp;
-module.exports = randomPasswordGenerator;</pre></td></tr></table></pre>
+module.exports = MOCK_GOOGLE_TOKEN</pre></td></tr></table></pre>
 
                 <div class='push'></div><!-- for sticky footer -->
             </div><!-- /wrapper -->

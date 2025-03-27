@@ -139,6 +139,14 @@ class UserController {
     static async googleLogin(req, res, next) {
         try {
             const { googleToken } = req.body
+
+            if (!googleToken) {
+                throw {
+                    name: "BadRequest",
+                    message: "googleToken is required"
+                }
+            }
+
             const client = new OAuth2Client();
             const ticket = await client.verifyIdToken({
                 idToken: googleToken,

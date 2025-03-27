@@ -48,14 +48,7 @@ module.exports = (sequelize, DataTypes) => {
     },
     role: {
       type: DataTypes.STRING,
-      defaultValue: "User",
-      validate: {
-        notAdmin(value) {
-          if (value === "Admin") {
-            throw new Error('create admin account is not permitted')
-          }
-        }
-      }
+      defaultValue: "User"
     },
     phoneNumber: DataTypes.STRING,
     address: DataTypes.STRING,
