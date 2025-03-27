@@ -93,7 +93,7 @@ function LoginPage() {
         }
 
         google.accounts.id.initialize({
-            client_id: "99734384722-c8ui5dt4d8q3budi3i7bd4khuapar7mc.apps.googleusercontent.com",
+            client_id: process.env.GOOGLE_CLIENT_ID,
             callback: handleCredentialResponse
         });
         google.accounts.id.renderButton(
