@@ -14,8 +14,30 @@ module.exports = (sequelize, DataTypes) => {
     }
   }
   UserCourse.init({
-    UserId: DataTypes.INTEGER,
-    CourseId: DataTypes.INTEGER,
+    UserId: {
+      allowNull: false,
+      type: DataTypes.INTEGER,
+      validate: {
+        notEmpty: {
+          msg: "userId is required"
+        },
+        notNull: {
+          msg: 'userId is required'
+        }
+      }
+    },
+    CourseId: {
+      allowNull: false,
+      type: DataTypes.INTEGER,
+      validate: {
+        notEmpty: {
+          msg: "courseId is required"
+        },
+        notNull: {
+          msg: 'courseId is required'
+        }
+      }
+    },
     favorite: DataTypes.BOOLEAN
   }, {
     sequelize,

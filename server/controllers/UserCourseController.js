@@ -116,7 +116,7 @@ class UserCourseController {
                     [Op.and]: [{ UserId: userId }, { CourseId: courseId }]
                 }
             });
-            return res.json({ message: "Course unenrolled successfully" });
+            return res.status(200).json({ message: "Course unenrolled successfully" });
         } catch (error) {
             next(error);
         }

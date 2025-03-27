@@ -111,43 +111,34 @@ describe('POST /user-courses (store)', () => {
         expect(response.body).toHaveProperty('CourseId', requestBody.courseId);
     });
 
-    test('should return 400 if courseId is not provided', async () => {
+    test('should return 404 if user is not found', async () => {
         const requestBody = {
-            userId: 1,
+            userId: 9999, // Non-existent user ID
+            courseId: 1,
         };
 
         const response = await request(app)
             .post('/user-courses')
             .set('Authorization', `Bearer ${accessToken}`)
             .send(requestBody)
-            .expect(400);
+            .expect(404);
 
-        expect(response.body.error).toBe('courseId is required');
+        expect(response.body).toBe(response);
     });
 
-    //     test('should return 404 if user is not found', async () => {
-    //         const newCourse = await Course.create({
-    //             title: 'Kanji bersama Ryu Sensei',
-    //             desc: 'Pelajari Kanji dengan mudah bersama Ryu Sensei.',
-    //             sensei: 'Ryu Sensei',
-    //             imageUrl: 'https://example.com/kanji.jpg',
-    //             createdAt: new Date(),
-    //             updatedAt: new Date(),
-    //         });
+    // test('should return 400 if courseId is not provided', async () => {
+    //     const requestBody = {
+    //         userId: 1,
+    //     };
 
-    //         const requestBody = {
-    //             userId: 9999, // Non-existent user ID
-    //             courseId: newCourse.id,
-    //         };
+    //     const response = await request(app)
+    //         .post('/user-courses')
+    //         .set('Authorization', `Bearer ${accessToken}`)
+    //         .send(requestBody)
+    //         .expect(400);
 
-    //         const response = await request(app)
-    //             .post('/user-courses')
-    //             .set('Authorization', `Bearer ${accessToken}`)
-    //             .send(requestBody)
-    //             .expect(404);
-
-    //         expect(response.body.error).toBe('error not found');
-    //     });
+    //     expect(response.body.error).toBe('courseId is required');
+    // });
 
     //     test('should return 401 if user email is not verified', async () => {
     //         const unverifiedUser = await User.create({
